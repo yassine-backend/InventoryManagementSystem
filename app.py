@@ -35,6 +35,10 @@ def Add_product():
     try:
         print("=== Add Product ===\n")
         Name = str(input("1-Product Name:")).upper()
+        if Name in products:
+            print("Product Alrady in DB")
+            input("Press Enter to Back to The Menu")
+            return
         Price = int(input("2-Price:"))
         if Price <0 :
             clear_console()
@@ -116,6 +120,11 @@ def Update_Quantity():
         input("Press Enter to Back to The Menu")
         return
     new_value = int(input("New Value of Quantity:"))
+    if new_value <0:
+            clear_console()
+            print("Quantity need to be equal or more then 0")
+            input("Press Enter to Back to The Menu")
+            return
     products[Name]["quantity_value"] = new_value
     clear_console()
     print("Product Quantity Edited Successfully!!")
@@ -135,39 +144,55 @@ def Sell_Product():
         input("Press Enter to Back to The Menu")
         return
     num_sell = int(input("How much You Want to Sell:"))
+    if num_sell <0:
+            clear_console()
+            print("Quantity need to be equal or more then 0")
+            input("Press Enter to Back to The Menu")
+            return
     if num_sell > products[Name]["quantity_value"]:
         print("You Cant Sell That Much You Dont Have Stock!!!")
         input("Press Enter to Back to The Menu")
         return
     else:
-       products[Name]["quantity_value"] = products[Name]["quantity_value"] - num_sell
+        products[Name]["quantity_value"] -= num_sell
 
     clear_console()
     print("Product Sell Successfully!!\n")
     print("You Have",products[Name]["quantity_value"], "Remaining\n")
     input("Press Enter to Back to The Menu")
 
-
-
+def Quit_programme():
+    clear_console()
+    print("See You Soon <3")
+    sys.exit()
 
 while True:
-    clear_console()
-    print("=== Inventory Management System ===\n")
-    print("1. Add Product\n2. View Products\n3. Search Product\n4. Delete Product\n5. Update Quantity\n6. Sell Product\n7. Quit")
-    Choise = int(input())
-    if Choise == 1:
-        Add_product()
-        save_db(products)
-    elif Choise == 2:
-        View_Products()
-    elif Choise == 3:
-        Search_Product()
-    elif Choise == 4:
-        Delete_Product()
-        save_db(products)
-    elif Choise == 5:
-        Update_Quantity()
-        save_db(products)
-    elif Choise == 6:
-        Sell_Product()
-        save_db(products)
+    try:
+        clear_console()
+        print("=== Inventory Management System ===\n")
+        print("1. Add Product\n2. View Products\n3. Search Product\n4. Delete Product\n5. Update Quantity\n6. Sell Product\n7. Quit")
+        Choise = int(input())
+
+        if Choise == 1:
+            Add_product()
+            save_db(products)
+        elif Choise == 2:
+            View_Products()
+        elif Choise == 3:
+            Search_Product()
+        elif Choise == 4:
+            Delete_Product()
+            save_db(products)
+        elif Choise == 5:
+            Update_Quantity()
+            save_db(products)
+        elif Choise == 6:
+            Sell_Product()
+            save_db(products)
+        elif Choise == 7:
+            Quit_programme()
+            break
+    except ValueError:
+        clear_console()
+        print("Value Need to be between 1-7 Only Numbers <3")
+        input("Press Enter Key To Get Back to Menu")
