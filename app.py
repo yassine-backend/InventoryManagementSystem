@@ -166,6 +166,54 @@ def Quit_programme():
     print("See You Soon <3")
     sys.exit()
 
+def Update_Price():
+    clear_console()
+    if not products:
+        print("Nothing in DB")
+        input("Press Enter to Back to The Menu")
+        return   
+    print("=== Update Price ===\n")
+    Name = str(input("Name Of Prudct:")).upper()
+    if Name not in products:
+        clear_console()
+        print("Product Not In DB!")
+        input("Press Enter to Back to The Menu")
+        return
+    new_value = int(input("New Value of Price:"))
+    if new_value <0:
+            clear_console()
+            print("Quantity need to be equal or more then 0")
+            input("Press Enter to Back to The Menu")
+            return
+    products[Name]["price_value"] = new_value
+    clear_console()
+    print("Product Price Edited Successfully!!")
+    input("Press Enter to Back to The Menu")
+
+def Statistics():
+    clear_console()
+    if not products:
+        print("Nothing in DB")
+        input("Press Enter to Back to The Menu")
+        return   
+    print("=== Statistics ===\n")
+    Total_Prod = 0
+    Total_Stock = 0
+    name_max=""
+    for i in products:
+        Total_Prod+=1
+        Total_Stock = products[i]["quantity_value"] + Total_Stock
+        max_km_value = max(v["price_value"] for v in products.values())
+    for i in products:
+            if products[i]["price_value"] == max_km_value:
+                name_max = i
+                break
+        
+    print("\nTotal Products:",Total_Prod,"\nTotal Stock Units:",Total_Stock, "\nmaximum_price:",name_max, max_km_value)
+
+    input("Press Enter to Back to The Menu")
+
+
 while True:
     try:
         clear_console()
@@ -190,8 +238,10 @@ while True:
             Sell_Product()
             save_db(products)
         elif Choise == 7:
-            Quit_programme()
-            break
+            Update_Price()
+        elif Choise == 8:
+            Statistics()
+            
     except ValueError:
         clear_console()
         print("Value Need to be between 1-7 Only Numbers <3")
